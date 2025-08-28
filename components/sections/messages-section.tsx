@@ -29,6 +29,10 @@ interface Note {
   expiresAt: Date
 }
 
+interface MessagesSectionProps {
+  currentGroupId: string
+}
+
 const mockChats: Chat[] = [
   {
     id: 1,
@@ -67,7 +71,7 @@ const mockChats: Chat[] = [
   },
 ]
 
-export function MessagesSection() {
+export function MessagesSection({ currentGroupId }: MessagesSectionProps) {
   const [chats, setChats] = useState<Chat[]>(mockChats)
   const [searchQuery, setSearchQuery] = useState("")
   const [noteText, setNoteText] = useState("")
@@ -77,12 +81,27 @@ export function MessagesSection() {
 
   const filteredChats = chats.filter((chat) => chat.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
-  const createNote = () => {
+  const createNote = async () => {
     if (noteText.trim() && noteText.length <= 80) {
-      // In a real app, this would create a note for the current user's group
-      console.log("Creating note:", noteText)
-      setNoteText("")
-      setShowNoteDialog(false)
+      try {
+        const response = await fetch("/api/notes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: noteText,
+            group_id: currentGroupId,
+          }),
+        })
+
+        if (response.ok) {
+          console.log("Note created successfully")
+          setNoteText("")
+          setShowNoteDialog(false)
+          // TODO: Refresh notes display
+        }
+      } catch (error) {
+        console.error("Error creating note:", error)
+      }
     }
   }
 
