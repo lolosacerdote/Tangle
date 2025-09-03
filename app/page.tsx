@@ -23,7 +23,6 @@ export default function TangleApp() {
   const [activeSection, setActiveSection] = useState("home")
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
   const [currentGroup, setCurrentGroup] = useState<UserGroup | null>(null)
-  const [currentGroup, setCurrentGroup] = useState<UserGroup | null>(null)
 
   useEffect(() => {
     const cached = loadActiveGroup();
@@ -66,12 +65,12 @@ export default function TangleApp() {
         return
       }
 
-      const groups = memberships.map((m) => ({
-        id: m.groups.id,
-        name: m.groups.name,
-        avatar_url: m.groups.avatar_url,
-        role: m.role,
-      }))
+      const groups = (memberships ?? []).map((m: any) => ({
+        id: m?.groups?.id,
+        name: m?.groups?.name,
+        avatar_url: m?.groups?.avatar_url ?? null,
+      }));
+
 
       setUserGroups(groups)
       setCurrentGroup(groups[0]) // Default to first group

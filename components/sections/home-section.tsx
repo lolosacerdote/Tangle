@@ -7,6 +7,8 @@ import { Card } from "@/components/ui/card"
 import { UploadDialog } from "@/components/upload-dialog"
 import { Heart, MessageCircle, MapPin, ExternalLink, Clock, Users, Plus } from "lucide-react"
 import { toast } from "sonner"
+import type { SectionProps } from "@/lib/section-props";
+
 
 interface Post {
   id: string
@@ -52,7 +54,7 @@ interface Event {
 }
 
 interface HomeProps {
-  currentGroupId: string
+  currentGroupId?: string | null
 }
 
 export function HomeSection({ currentGroupId }: HomeProps) {
