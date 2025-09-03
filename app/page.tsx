@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react"
 import { BottomNavigation } from "@/components/bottom-navigation"
