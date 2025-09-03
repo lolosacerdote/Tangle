@@ -9,6 +9,8 @@ import { ActivitySection } from "@/components/sections/activity-section"
 import { EventsSection } from "@/components/sections/events-section"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
+import { loadActiveGroup, saveActiveGroup } from "@/lib/persist"
+
 
 interface UserGroup {
   id: string
@@ -21,6 +23,17 @@ export default function TangleApp() {
   const [activeSection, setActiveSection] = useState("home")
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
   const [currentGroup, setCurrentGroup] = useState<UserGroup | null>(null)
+  const [currentGroup, setCurrentGroup] = useState<UserGroup | null>(null)
+
+  useEffect(() => {
+    const cached = loadActiveGroup();
+    if (cached) setCurrentGroup(cached as any);
+  }, []);
+
+  useEffect(() => {
+    if (currentGroup) saveActiveGroup(currentGroup as any);
+  }, [currentGroup]);
+
   const [userGroups, setUserGroups] = useState<UserGroup[]>([])
   const router = useRouter()
 
